@@ -1,0 +1,31 @@
+<h1>@<%= @user.username %>'s Profile & Tweets</h1>
+  <div class="well img-container">
+    <div class="row">
+        <div class="col-xs-6">
+    <%= image_tag @user.avatar.url, size: 150, class: "img-responsive" %>
+      <p><%= @user.name %></p>
+      <p><%= @user.location %></p>
+      <p><%= @user.bio %></p>
+      </div>
+      <div class="col-xs-6">
+<p>
+    <% if current_user.following.include?(@user.id) %>
+        <%= link_to "You are Following", unfollow_path(id: @user.id), class: "btn btn-primary", id: "unfollow-btn" %>
+    <% else %>
+        <% if current_user.id != @user.id %>
+	    <%= link_to "Follow #{@user.username}", now_following_path(id: @user.id), class: "btn btn-primary" %>
+	<% end %>
+    <% end %>
+</p>
+        <p> <%= link_to "#{@user.username}'s Followers", followers_path(id: @user.id), class: "btn btn-primary" %></p>
+        <p><%= link_to "#{@user.username} is Following", following_path(id: @user.id), class: "btn btn-primary" %></p>
+</div>
+</div>
+</div>
+
+<% @user.tweets.each do |tweet| %>
+    <div class="well">
+        <p>@<%= @user.username %></p>
+	<p><%= tweet.message.html_safe %></p>
+    </div>
+<% end %>
